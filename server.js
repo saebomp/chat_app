@@ -25,9 +25,12 @@ io.on('connection', socket => {
     //Runs when client disconnects
     socket.on('disconnect', ()=> {
         io.emit('message', 'A user has left the chat') 
-    //all the clients
     })
     
+    //Listen for chatMessage
+    socket.on('chatMessage', msg=> {
+        io.emit('message', msg)
+    })
 })
 
 const PORT = 3000 || process.env.PORT;
@@ -36,4 +39,4 @@ server.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 
 
 //npm run dev
-// https://www.youtube.com/watch?v=jD7FnbI76Hg   17:20
+// https://www.youtube.com/watch?v=jD7FnbI76Hg   24:36
