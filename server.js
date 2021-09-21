@@ -2,6 +2,7 @@ const path = require('path');
 const http = require('http');
 const express = require('express');
 const socketio = require('socket.io');
+const formatMessage = require('./utils/messages')
 
 const app = express();
 const server = http.createServer(app);
@@ -14,22 +15,20 @@ app.use(express.static(path.join(__dirname,'public')));
 // Run when client connects
 io.on('connection', socket => {
 
-    //Welcome current user
-    socket.emit('message', 'Welcome to ChatCord'); 
-    //for single clients
+    //Welcome current user - for single clients
+    socket.emit('message', formatMessage('Admin', 'Welcome to ChatCord')); 
     
-    //Broadcast when a user connetcs
-    socket.broadcast.emit('message', 'A user has joined the chat'); 
-    //for all of the clients except the client that's connecting
+    //Broadcast when a user connetcs - for all of the clients except the client that's connecting
+    socket.broadcast.emit('message', formatMessage('Admin', 'A user has joined the chat')); 
 
     //Runs when client disconnects
     socket.on('disconnect', ()=> {
-        io.emit('message', 'A user has left the chat') 
+        io.emit('message', formatMessage('Admin', 'A user has left the chat')) 
     })
     
     //Listen for chatMessage
     socket.on('chatMessage', msg=> {
-        io.emit('message', msg)
+        io.emit('message', formatMessage('User', msg))
     })
 })
 
@@ -39,4 +38,4 @@ server.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 
 
 //npm run dev
-// https://www.youtube.com/watch?v=jD7FnbI76Hg   24:36
+// https://www.youtube.com/watch?v=jD7FnbI76Hg  27:57
