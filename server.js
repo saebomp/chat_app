@@ -3,7 +3,7 @@ const http = require('http');
 const express = require('express');
 const socketio = require('socket.io');
 const formatMessage = require('./utils/messages')
-const {userJoin, getCurrentUser} = require('./utils/users')
+const {userJoin, getCurrentUser, userLeave, getRoomUsers} = require('./utils/users')
 
 const app = express();
 const server = http.createServer(app);
@@ -29,12 +29,17 @@ io.on('connection', socket => {
     
     //Runs when client disconnects
     socket.on('disconnect', ()=> {
-        io.emit('message', formatMessage('Admin', `A user has left the chat`)) 
+        const user = userLeave(socket.id);
+        if(user){
+            io.to(user.room).emit('message', formatMessage('Admin', `${user.username} has left the chat`)) 
+        }
+
     })
     
     //Listen for chatMessage
     socket.on('chatMessage', msg=> {
-        io.emit('message', formatMessage('User', msg))
+        const user = getCurrentUser(socket.id)
+        io.to(user.room).emit('message', formatMessage(user.username, msg))
     })
 })
 
@@ -44,4 +49,5 @@ server.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 
 
 //npm run dev
-// https://www.youtube.com/watch?v=jD7FnbI76Hg  43:41
+// https://www.youtube.com/watch?v=jD7FnbI76Hg  50:48
+// https://cdnjs.com/libraries/qs
