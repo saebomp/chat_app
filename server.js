@@ -24,6 +24,12 @@ io.on('connection', socket => {
         
         //Broadcast when a user connetcs - for all of the clients except the client that's connecting
         socket.broadcast.to(user.room).emit('message', formatMessage('Admin', `${user.username} has joined the chat`)); 
+
+        //Send users and room info
+        io.to(user.room).emit('roomUsers', {
+            room: user.room,
+            users: getRoomUsers(user.room)
+        })
     })
 
     
@@ -32,8 +38,13 @@ io.on('connection', socket => {
         const user = userLeave(socket.id);
         if(user){
             io.to(user.room).emit('message', formatMessage('Admin', `${user.username} has left the chat`)) 
+        
+            //Send users and room info
+            io.to(user.room).emit('roomUsers', {
+                room: user.room,
+                users: getRoomUsers(user.room)
+            })
         }
-
     })
     
     //Listen for chatMessage
