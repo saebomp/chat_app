@@ -146,6 +146,10 @@ a {
 	border-top-right-radius: 5px;
 }
 
+.room-h1 {
+	color:#fff;
+}
+
 .join-main {
 	padding: 30px 40px;
 	background: var(--dark-color-b);

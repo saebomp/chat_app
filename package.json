@@ -3,10 +3,10 @@
   "version": "1.0.0",
   "description": "Realtime chat app with rooms",
   "main": "server.js",
-  "homepage":"https://saebomp.github.io/chat_app",
+  "homepage": "https://saebomp.github.io/chat_app",
   "scripts": {
     "start": "node server",
-    "dev":"nodemon server",
+    "dev": "nodemon server",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build"
   },
@@ -21,6 +21,7 @@
   },
   "dependencies": {
     "express": "^4.17.1",
+    "gh-pages": "^3.2.3",
     "moment": "^2.29.1",
     "socket.io": "^4.2.0"
   },
