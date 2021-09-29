@@ -1,4 +1,4 @@
-# MeetMe
+# Realtime Chat App
 - Built a chat app using Node, express & websockets 
 ## Technologies
 Node.js / WebSockets / HTML / CSS
